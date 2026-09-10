@@ -7,15 +7,18 @@
 
 namespace BitskiPHPFileTransfer\application;
 
+use BitskiPHPFileTransfer\domain\TransferCreator;
 use BitskiPHPFileTransfer\infrastructure\PeerAuthenticator;
 
 class TransferService
 {
     private PeerAuthenticator $peerAuthenticator;
+    private TransferCreator $transferCreator;
 
-    public function __construct(PeerAuthenticator $peerAuthenticator)
+    public function __construct(PeerAuthenticator $peerAuthenticator, TransferCreator $transferCreator)
     {
         $this->peerAuthenticator = $peerAuthenticator;
+        $this->transferCreator = $transferCreator;
     }
 
     /**
@@ -23,16 +26,18 @@ class TransferService
      */
     public function create(): bool
     {
-        if ( ! $this->authorize()) {
+        if (!$this->authorize()) {
             return false;
         }
+
+        $transfer = $this->transferCreator->createTransfer();
 
         return true;
     }
 
     protected function authorize(): bool
     {
-        if ( ! $this->peerAuthenticator->isPeerAuthorized()) {
+        if (!$this->peerAuthenticator->isPeerAuthorized()) {
             return false;
         }
 
