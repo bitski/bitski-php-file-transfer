@@ -7,9 +7,11 @@
 
 namespace BitskiPHPFileTransfer\infrastructure;
 
+use BitskiPHPFileTransfer\domain\Transfer;
+
 class FileStorage
 {
-    public function saveFile(): bool
+    public function saveFile(Transfer $transfer): bool
     {
         return true;
     }

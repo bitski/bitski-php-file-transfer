@@ -8,6 +8,7 @@
 namespace BitskiPHPFileTransfer\application;
 
 use BitskiPHPFileTransfer\domain\TransferCreator;
+use BitskiPHPFileTransfer\domain\TransferRepository;
 use BitskiPHPFileTransfer\infrastructure\FileStorage;
 use BitskiPHPFileTransfer\infrastructure\PeerAuthenticator;
 
@@ -15,13 +16,19 @@ class TransferService
 {
     private PeerAuthenticator $peerAuthenticator;
     private TransferCreator $transferCreator;
+    private TransferRepository $transferRepository;
     private FileStorage $fileStorage;
 
-    public function __construct(PeerAuthenticator $peerAuthenticator, TransferCreator $transferCreator, FileStorage $fileStorage)
-    {
-        $this->peerAuthenticator = $peerAuthenticator;
-        $this->transferCreator = $transferCreator;
-        $this->fileStorage = $fileStorage;
+    public function __construct(
+        PeerAuthenticator $peerAuthenticator,
+        TransferCreator $transferCreator,
+        TransferRepository $transferRepository,
+        FileStorage $fileStorage,
+    ) {
+        $this->peerAuthenticator  = $peerAuthenticator;
+        $this->transferCreator    = $transferCreator;
+        $this->transferRepository = $transferRepository;
+        $this->fileStorage        = $fileStorage;
     }
 
     /**
@@ -35,7 +42,11 @@ class TransferService
 
         $transfer = $this->transferCreator->createTransfer();
 
-        if ( ! $this->fileStorage->saveFile($transfer)) {
+        if (!$this->transferRepository->save($transfer)) {
+            return false;
+        }
+
+        if (!$this->fileStorage->saveFile($transfer)) {
             return false;
         }
 
