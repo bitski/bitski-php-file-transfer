@@ -10,6 +10,7 @@ namespace BitskiPHPFileTransfer\application;
 use BitskiPHPFileTransfer\domain\TransferCreator;
 use BitskiPHPFileTransfer\domain\TransferRepository;
 use BitskiPHPFileTransfer\infrastructure\FileStorage;
+use BitskiPHPFileTransfer\infrastructure\Mailer;
 use BitskiPHPFileTransfer\infrastructure\PeerAuthenticator;
 
 class TransferService
@@ -18,17 +19,20 @@ class TransferService
     private TransferCreator $transferCreator;
     private TransferRepository $transferRepository;
     private FileStorage $fileStorage;
+    private Mailer $mailer;
 
     public function __construct(
         PeerAuthenticator $peerAuthenticator,
         TransferCreator $transferCreator,
         TransferRepository $transferRepository,
         FileStorage $fileStorage,
+        Mailer $mailer,
     ) {
         $this->peerAuthenticator  = $peerAuthenticator;
         $this->transferCreator    = $transferCreator;
         $this->transferRepository = $transferRepository;
         $this->fileStorage        = $fileStorage;
+        $this->mailer             = $mailer;
     }
 
     /**
@@ -47,6 +51,10 @@ class TransferService
         }
 
         if (!$this->fileStorage->saveFile($transfer)) {
+            return false;
+        }
+
+        if (!$this->mailer->sendEmail()) {
             return false;
         }
 
