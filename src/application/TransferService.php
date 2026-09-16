@@ -40,7 +40,7 @@ class TransferService
      */
     public function create(): bool
     {
-        if (!$this->authorize()) {
+        if (!$this->peerAuthenticator->isPeerAuthorized()) {
             return false;
         }
 
@@ -55,15 +55,6 @@ class TransferService
         }
 
         if (!$this->mailer->sendEmail()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function authorize(): bool
-    {
-        if (!$this->peerAuthenticator->isPeerAuthorized()) {
             return false;
         }
 
