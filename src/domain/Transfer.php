@@ -7,7 +7,4 @@
 
 namespace BitskiPHPFileTransfer\domain;
 
-class Transfer
-{
-
-}
+class Transfer {}

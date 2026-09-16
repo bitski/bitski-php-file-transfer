@@ -13,4 +13,9 @@ class TransferRepository
     {
         return true;
     }
+
+    /**
+     * @since 0.1.6
+     */
+    public function delete(Transfer $transfer): void {}
 }

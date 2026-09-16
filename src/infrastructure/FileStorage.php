@@ -11,8 +11,13 @@ use BitskiPHPFileTransfer\domain\Transfer;
 
 class FileStorage
 {
-    public function saveFile(Transfer $transfer): bool
+    public function save(Transfer $transfer): bool
     {
         return true;
     }
+
+    /**
+     * @since 0.1.6
+     */
+    public function delete(Transfer $transfer): void {}
 }

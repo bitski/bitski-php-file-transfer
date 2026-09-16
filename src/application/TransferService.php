@@ -50,11 +50,16 @@ class TransferService
             return false;
         }
 
-        if (!$this->fileStorage->saveFile($transfer)) {
+        if (!$this->fileStorage->save($transfer)) {
+            $this->transferRepository->delete($transfer);
+
             return false;
         }
 
-        if (!$this->mailer->sendEmail()) {
+        if (!$this->mailer->send($transfer)) {
+            $this->fileStorage->delete($transfer);
+            $this->transferRepository->delete($transfer);
+
             return false;
         }
 

@@ -7,9 +7,11 @@
 
 namespace BitskiPHPFileTransfer\infrastructure;
 
+use BitskiPHPFileTransfer\domain\Transfer;
+
 class Mailer
 {
-    public function sendEmail(): bool
+    public function send(Transfer $transfer): bool
     {
         return true;
     }
