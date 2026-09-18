@@ -12,10 +12,12 @@ use BitskiPHPFileTransfer\domain\TransferRepository;
 use BitskiPHPFileTransfer\infrastructure\FileStorage;
 use BitskiPHPFileTransfer\infrastructure\Mailer;
 use BitskiPHPFileTransfer\infrastructure\PeerAuthenticator;
+use BitskiPHPFileTransfer\infrastructure\TransferCleanup;
 
 class TransferService
 {
     private PeerAuthenticator $peerAuthenticator;
+    private TransferCleanup $transferCleanup;
     private TransferCreator $transferCreator;
     private TransferRepository $transferRepository;
     private FileStorage $fileStorage;
@@ -23,12 +25,14 @@ class TransferService
 
     public function __construct(
         PeerAuthenticator $peerAuthenticator,
+        TransferCleanup $transferCleanup,
         TransferCreator $transferCreator,
         TransferRepository $transferRepository,
         FileStorage $fileStorage,
         Mailer $mailer,
     ) {
         $this->peerAuthenticator  = $peerAuthenticator;
+        $this->transferCleanup    = $transferCleanup;
         $this->transferCreator    = $transferCreator;
         $this->transferRepository = $transferRepository;
         $this->fileStorage        = $fileStorage;
@@ -43,6 +47,8 @@ class TransferService
         if (!$this->peerAuthenticator->isPeerAuthorized()) {
             return false;
         }
+
+        $this->transferCleanup->cleanup();
 
         $transfer = $this->transferCreator->createTransfer();
 
