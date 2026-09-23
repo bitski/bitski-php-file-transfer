@@ -9,9 +9,10 @@ namespace BitskiPHPFileTransfer\domain;
 
 class TransferRepository
 {
-    public function save(Transfer $transfer): bool
+    public function save(Transfer $transfer): ?int
     {
-        return true;
+        // Temporary stub: simulate database-generated ID.
+        return 1;
     }
 
     /**

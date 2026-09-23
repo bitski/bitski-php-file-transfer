@@ -8,10 +8,11 @@
 namespace BitskiPHPFileTransfer\domain;
 
 use DateTimeImmutable;
+use LogicException;
 
 class Transfer
 {
-    protected int $id;
+    protected ?int $id;
     protected DateTimeImmutable $createdAt;
     protected string $initiator;
     protected string $recipient;
@@ -37,7 +38,8 @@ class Transfer
         $this->mimeType  = $mimeType;
     }
 
-    public function getId(): int
+    // Getters.
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -65,5 +67,15 @@ class Transfer
     public function getMimeType(): string
     {
         return $this->mimeType;
+    }
+
+    // State-changing / domain behavior.
+    public function assignId(int $id): void
+    {
+        if ($this->id !== null) {
+            throw new LogicException('Transfer ID cannot be changed.');
+        }
+
+        $this->id = $id;
     }
 }

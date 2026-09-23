@@ -56,7 +56,26 @@ class TransferService
 
         $this->transferCleanup->cleanup();
 
-        $transfer = $this->transferCreator->createTransfer($initiator, $recipient, $fileName, $mimeType);
+        /*
+         * Creates the transfer without a persistence ID.
+         *
+         * The persistence layer generates the ID, which is assigned to the transfer
+         * after saving and before continuing with the rest of the workflow.
+         */
+        $transfer = $this->transferCreator->createTransfer(
+            $initiator,
+            $recipient,
+            $fileName,
+            $mimeType,
+        );
+
+        $transferId = $this->transferRepository->save($transfer);
+
+        if ($transferId === null) {
+            return false;
+        }
+
+        $transfer->assignId($transferId);
 
         if (!$this->transferRepository->save($transfer)) {
             return false;
