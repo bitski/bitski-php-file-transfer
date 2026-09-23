@@ -5,7 +5,9 @@
  * @since 0.1.4
  */
 
-namespace BitskiPHPFileTransfer\domain;
+namespace BitskiPHPFileTransfer\infrastructure;
+
+use BitskiPHPFileTransfer\domain\Transfer;
 
 class TransferRepository
 {
