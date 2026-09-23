@@ -15,26 +15,26 @@ class Transfer
     protected DateTimeImmutable $createdAt;
     protected string $initiator;
     protected string $recipient;
-    protected string $mimeType;
     protected string $fileName;
+    protected string $mimeType;
 
     /**
      * @since 0.1.8
      */
     public function __construct(
-        int $id,
+        ?int $id,
         DateTimeImmutable $createdAt,
         string $initiator,
         string $recipient,
-        string $mimeType,
         string $fileName,
+        string $mimeType,
     ) {
         $this->id        = $id;
         $this->createdAt = $createdAt;
         $this->initiator = $initiator;
         $this->recipient = $recipient;
-        $this->mimeType  = $mimeType;
         $this->fileName  = $fileName;
+        $this->mimeType  = $mimeType;
     }
 
     public function getId(): int
@@ -57,13 +57,13 @@ class Transfer
         return $this->recipient;
     }
 
-    public function getMimeType(): string
-    {
-        return $this->mimeType;
-    }
-
     public function getFileName(): string
     {
         return $this->fileName;
+    }
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
     }
 }

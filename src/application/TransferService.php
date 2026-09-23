@@ -51,10 +51,12 @@ class TransferService
         }
 
         $recipient = $formData['recipient'];
+        $fileName  = $formData['fileName'];
+        $mimeType  = $formData['mimeType'];
 
         $this->transferCleanup->cleanup();
 
-        $transfer = $this->transferCreator->createTransfer($initiator, $recipient);
+        $transfer = $this->transferCreator->createTransfer($initiator, $recipient, $fileName, $mimeType);
 
         if (!$this->transferRepository->save($transfer)) {
             return false;

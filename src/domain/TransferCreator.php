@@ -7,10 +7,22 @@
 
 namespace BitskiPHPFileTransfer\domain;
 
+use DateTimeImmutable;
+
 class TransferCreator
 {
-    public function createTransfer(string $initiator, string $recipient): Transfer
+    public function createTransfer(string $initiator, string $recipient, string $fileName, string $mimeType): Transfer
     {
-        return new Transfer();
+        $createdAt = new DateTimeImmutable();
+
+        // Transfer ID will be assigned during persistence (Phase 3). E.g. auto-increment-int
+        return new Transfer(
+            null,
+            $createdAt,
+            $initiator,
+            $recipient,
+            $fileName,
+            $mimeType,
+        );
     }
 }
