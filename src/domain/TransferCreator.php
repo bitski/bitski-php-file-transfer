@@ -9,7 +9,7 @@ namespace BitskiPHPFileTransfer\domain;
 
 class TransferCreator
 {
-    public function createTransfer(): Transfer
+    public function createTransfer(string $initiator, string $recipient): Transfer
     {
         return new Transfer();
     }

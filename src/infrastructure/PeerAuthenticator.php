@@ -12,8 +12,10 @@ class PeerAuthenticator
     /**
      * Checks if the current peer is authorized.
      */
-    public function isPeerAuthorized(): bool
+    public function getAuthorizedPeer(): string | false
     {
-        return true;
+        $initiator = '';
+
+        return $initiator;
     }
 }

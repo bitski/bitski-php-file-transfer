@@ -42,15 +42,19 @@ class TransferService
     /**
      * Creates a new transfer.
      */
-    public function create(): bool
+    public function create(array $formData): bool
     {
-        if (!$this->peerAuthenticator->isPeerAuthorized()) {
+        $initiator = $this->peerAuthenticator->getAuthorizedPeer();
+
+        if ($initiator === false) {
             return false;
         }
 
+        $recipient = $formData['recipient'];
+
         $this->transferCleanup->cleanup();
 
-        $transfer = $this->transferCreator->createTransfer();
+        $transfer = $this->transferCreator->createTransfer($initiator, $recipient);
 
         if (!$this->transferRepository->save($transfer)) {
             return false;
