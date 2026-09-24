@@ -51,9 +51,9 @@ class TransferService
         }
 
         $recipient = $formData['recipient'];
-        $fileName  = $formData['fileName'];
-        $mimeType  = $formData['mimeType'];
         $file      = $formData['file'];
+        $fileName  = $file['name'];
+        $mimeType  = $file['type'];
 
         $this->transferCleanup->cleanup();
 
