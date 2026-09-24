@@ -53,6 +53,7 @@ class TransferService
         $recipient = $formData['recipient'];
         $fileName  = $formData['fileName'];
         $mimeType  = $formData['mimeType'];
+        $file      = $formData['file'];
 
         $this->transferCleanup->cleanup();
 
@@ -77,7 +78,7 @@ class TransferService
 
         $transfer->assignId($transferId);
 
-        if (!$this->fileStorage->save($transfer)) {
+        if (!$this->fileStorage->save($transfer, $file)) {
             $this->transferRepository->delete($transfer);
 
             return false;
