@@ -11,9 +11,31 @@ use BitskiPHPFileTransfer\domain\Transfer;
 
 class FileStorage
 {
-    public function save(Transfer $transfer): bool
+    private string $storagePath;
+
+    /**
+     * @since 0.1.9
+     */
+    public function __construct()
     {
-        return true;
+        $this->storagePath = dirname(__DIR__, 2) . '/storage';
+    }
+
+    public function save(Transfer $transfer, $file): bool
+    {
+        $transferStoragePath = $this->storagePath . '/' . $transfer->getId();
+
+        if (!is_dir($transferStoragePath)
+            && !mkdir($transferStoragePath)
+        ) {
+            return false;
+        }
+
+        $fileTempPath    = $file['tmp_name'];
+        $fileStoragePath = $transferStoragePath . '/'
+            . $transfer->getFileName();
+
+        return move_uploaded_file($fileTempPath, $fileStoragePath);
     }
 
     /**
