@@ -23,23 +23,33 @@ class FileStorage
 
     public function save(Transfer $transfer, $file): bool
     {
-        $transferStoragePath = $this->storagePath . '/' . $transfer->getId();
+        $transferDirectory = $this->getTransferDirectory($transfer);
 
-        if (!is_dir($transferStoragePath)
-            && !mkdir($transferStoragePath)
+        if (!is_dir($transferDirectory)
+            && !mkdir($transferDirectory)
         ) {
             return false;
         }
 
-        $fileTempPath    = $file['tmp_name'];
-        $fileStoragePath = $transferStoragePath . '/'
-            . $transfer->getFileName();
+        $fileTempPath = $file['tmp_name'];
+        $filePath     = $this->getFilePath($transfer);
 
-        return move_uploaded_file($fileTempPath, $fileStoragePath);
+        return move_uploaded_file($fileTempPath, $filePath);
     }
 
     /**
      * @since 0.1.6
      */
     public function delete(Transfer $transfer): void {}
+
+    private function getTransferDirectory(Transfer $transfer): string
+    {
+        return $this->storagePath . '/' . $transfer->getId();
+    }
+
+    private function getFilePath(Transfer $transfer): string
+    {
+        return $this->getTransferDirectory($transfer) . '/'
+            . $transfer->getFileName();
+    }
 }
